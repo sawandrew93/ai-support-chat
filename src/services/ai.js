@@ -2,23 +2,34 @@ import fetch from 'node-fetch';
 import { config } from '../config.js';
 
 export async function generateAIResponse({ prompt, context }) {
-  const body = {
-    contents: [
-      {
-        role: 'user',
-        parts: [{ text: buildRagPrompt(prompt, context) }]
-      }
-    ]
-  };
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/${config.geminiModel}:generateContent?key=${config.googleApiKey}`;
-  const resp = await fetch(url, {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-  const json = await resp.json();
-  const text = json?.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not generate a response.';
-  return text;
+  try {
+    const body = {
+      contents: [
+        {
+          role: 'user',
+          parts: [{ text: buildRagPrompt(prompt, context) }]
+        }
+      ]
+    };
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/${config.geminiModel}:generateContent?key=${config.googleApiKey}`;
+    const resp = await fetch(url, {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(body)
+    });
+    
+    if (!resp.ok) {
+      console.error('Gemini API error:', resp.status, resp.statusText);
+      return 'Sorry, I encountered an error while generating a response.';
+    }
+    
+    const json = await resp.json();
+    const text = json?.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not generate a response.';
+    return text;
+  } catch (error) {
+    console.error('Error in generateAIResponse:', error);
+    return 'Sorry, I encountered an error while generating a response.';
+  }
 }
 
 export async function analyzeIntentForHandoff(message) {
