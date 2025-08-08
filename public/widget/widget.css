@@ -1,0 +1,9 @@
+body { font-family: system-ui, sans-serif; background: #f6f8fa; }
+.chat { width: 360px; margin: 24px auto; border: 1px solid #ddd; border-radius: 8px; background: #fff; }
+.messages { height: 420px; overflow: auto; padding: 12px; }
+.msg { margin: 8px 0; }
+.msg.user { text-align: right; }
+.input { display: flex; border-top: 1px solid #eee; }
+.input input { flex: 1; padding: 8px; border: 0; }
+.input button { padding: 8px 12px; border: 0; background: #0969da; color: #fff; }
+

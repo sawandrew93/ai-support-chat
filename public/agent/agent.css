@@ -1,0 +1,5 @@
+body { font-family: system-ui; margin: 2rem; }
+.login, .app { max-width: 640px; margin: auto; }
+#conv { border: 1px solid #ddd; padding: 8px; min-height: 200px; margin: 12px 0; }
+.msg { margin: 6px 0; }
+

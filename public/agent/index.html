@@ -1,0 +1,29 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Agent Dashboard</title>
+  <link rel="stylesheet" href="agent.css" />
+</head>
+<body>
+  <div class="login" id="login">
+    <h3>Agent Login</h3>
+    <input id="email" placeholder="email" />
+    <input id="password" placeholder="password" type="password" />
+    <button id="loginBtn">Login</button>
+  </div>
+
+  <div class="app" id="app" style="display:none;">
+    <button id="onlineBtn">Go Online</button>
+    <button id="pullBtn">Pull Next</button>
+    <div id="status"></div>
+    <div id="conv"></div>
+    <input id="reply" placeholder="Type reply..." />
+    <button id="send">Send</button>
+  </div>
+
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <script src="agent.js"></script>
+</body>
+</html>
+
