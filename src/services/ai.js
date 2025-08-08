@@ -2,29 +2,44 @@ import fetch from 'node-fetch';
 import { config } from '../config.js';
 
 export async function generateAIResponse({ prompt, context }) {
+  console.log('🤖 Starting AI response generation...');
+  console.log('Model:', config.geminiModel);
+  console.log('Context items:', context.length);
+  
   try {
+    const ragPrompt = buildRagPrompt(prompt, context);
+    console.log('RAG prompt length:', ragPrompt.length);
+    
     const body = {
       contents: [
         {
           role: 'user',
-          parts: [{ text: buildRagPrompt(prompt, context) }]
+          parts: [{ text: ragPrompt }]
         }
       ]
     };
     const url = `https://generativelanguage.googleapis.com/v1beta/models/${config.geminiModel}:generateContent?key=${config.googleApiKey}`;
+    
+    console.log('Making request to Gemini API...');
     const resp = await fetch(url, {
       method: 'POST',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(body)
     });
     
+    console.log('Gemini API response status:', resp.status);
+    
     if (!resp.ok) {
-      console.error('Gemini API error:', resp.status, resp.statusText);
+      const errorText = await resp.text();
+      console.error('Gemini API error:', resp.status, resp.statusText, errorText);
       return 'Sorry, I encountered an error while generating a response.';
     }
     
     const json = await resp.json();
+    console.log('Gemini API response received');
+    
     const text = json?.candidates?.[0]?.content?.parts?.[0]?.text || 'Sorry, I could not generate a response.';
+    console.log('Generated response length:', text.length);
     return text;
   } catch (error) {
     console.error('Error in generateAIResponse:', error);

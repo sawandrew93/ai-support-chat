@@ -40,6 +40,10 @@ app.get('/health', (_, res) => res.json({ ok: true }));
 initSockets(io);
 
 server.listen(config.port, () => {
-  console.log(`Server listening on http://0.0.0.0:${config.port}`);
+  console.log(`🚀 Server listening on http://0.0.0.0:${config.port}`);
+  console.log(`🔑 Google API Key configured: ${config.googleApiKey ? 'Yes' : 'No'}`);
+  console.log(`🤖 Gemini Model: ${config.geminiModel}`);
+  console.log(`🔍 Embedding Model: ${config.embeddingModel}`);
+  console.log(`💾 Supabase URL: ${config.supabaseUrl}`);
 });
 
